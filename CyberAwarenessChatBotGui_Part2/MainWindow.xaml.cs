@@ -7,9 +7,7 @@ namespace CyberSecurityBotGUI
 {
     public partial class MainWindow : Window
     {
-        // =========================
         // VARIABLES
-        // =========================
 
         string userName = "";
         string favouriteTopic = "";
@@ -19,9 +17,7 @@ namespace CyberSecurityBotGUI
 
         SpeechSynthesizer speaker = new SpeechSynthesizer();
 
-        // =========================
         // CONSTRUCTOR
-        // =========================
 
         public MainWindow()
         {
