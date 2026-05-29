@@ -12,23 +12,22 @@ namespace CyberSecurityBotGUI
         string favouriteTopic = "";
         string lastTopic = "";
 
-        // Random Response Generator
+        // Random Generator
         Random random = new Random();
 
-        // Speech Synthesizer
+        // Speech
         SpeechSynthesizer speaker = new SpeechSynthesizer();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            // Voice Greeting
             speaker.SpeakAsync("Hello! Welcome to the Cyber Security Awareness Bot.");
 
             BotReply("Hello! What is your name?");
         }
 
-        // Bot Message
+        // Bot Response
         private void BotReply(string message)
         {
             rtbChat.Document.Blocks.Add(
@@ -44,12 +43,12 @@ namespace CyberSecurityBotGUI
                 new Paragraph(new Run("You: " + message)));
         }
 
-        // Send Button
+        // Main Chat Logic
         private void btnSend_Click(object sender, RoutedEventArgs e)
         {
             string input = txtUserInput.Text.ToLower().Trim();
 
-            // Error Handling for Empty Input
+            // Empty Input Handling
             if (string.IsNullOrWhiteSpace(input))
             {
                 BotReply("Please type a message.");
@@ -59,14 +58,16 @@ namespace CyberSecurityBotGUI
             UserMessage(input);
 
             // =========================
-            // NAME VALIDATION & MEMORY
+            // NAME HANDLING
             // =========================
             if (userName == "")
             {
                 if (Regex.IsMatch(input, @"^[a-zA-Z]+$"))
                 {
                     userName = input;
+
                     BotReply("Nice to meet you, " + userName + "!");
+                    BotReply("Which cybersecurity topic would you like help with today?");
                 }
                 else
                 {
@@ -78,9 +79,13 @@ namespace CyberSecurityBotGUI
             }
 
             // =========================
-            // PASSWORDS
+            // PASSWORD KEYWORDS
             // =========================
-            if (input.Contains("password"))
+            if (input.Contains("password") ||
+                input.Contains("passcode") ||
+                input.Contains("login") ||
+                input.Contains("credential") ||
+                input.Contains("authentication"))
             {
                 favouriteTopic = "password security";
                 lastTopic = "password";
@@ -96,53 +101,161 @@ namespace CyberSecurityBotGUI
             }
 
             // =========================
-            // PHISHING
+            // PHISHING KEYWORDS
             // =========================
-            else if (input.Contains("phishing"))
+            else if (input.Contains("phishing") ||
+                     input.Contains("fake email") ||
+                     input.Contains("spam") ||
+                     input.Contains("scam link") ||
+                     input.Contains("malicious link"))
             {
                 favouriteTopic = "phishing awareness";
                 lastTopic = "phishing";
 
                 string[] responses =
                 {
-                    "Do not click suspicious links.",
-                    "Always verify the sender email address.",
-                    "Phishing emails often create urgency or fear."
+                    "Always verify suspicious emails before clicking links.",
+                    "Do not download attachments from unknown senders.",
+                    "Phishing attacks often create urgency or fear."
                 };
 
                 BotReply(responses[random.Next(responses.Length)]);
             }
 
             // =========================
-            // SCAMS
+            // MALWARE KEYWORDS
             // =========================
-            else if (input.Contains("scam"))
+            else if (input.Contains("virus") ||
+                     input.Contains("malware") ||
+                     input.Contains("trojan") ||
+                     input.Contains("worm") ||
+                     input.Contains("spyware") ||
+                     input.Contains("ransomware"))
             {
-                favouriteTopic = "online scams";
-                lastTopic = "scam";
+                favouriteTopic = "malware protection";
+                lastTopic = "malware";
 
-                BotReply("Never share banking details with strangers online.");
+                BotReply("Install trusted antivirus software and keep your system updated.");
             }
 
             // =========================
-            // PRIVACY
+            // PRIVACY KEYWORDS
             // =========================
-            else if (input.Contains("privacy"))
+            else if (input.Contains("privacy") ||
+                     input.Contains("tracking") ||
+                     input.Contains("data collection") ||
+                     input.Contains("personal data") ||
+                     input.Contains("cookies"))
             {
                 favouriteTopic = "privacy";
                 lastTopic = "privacy";
 
-                BotReply("Great! I'll remember that you're interested in privacy. Review your account privacy settings regularly.");
+                BotReply("Review your privacy settings regularly and avoid oversharing online.");
             }
 
             // =========================
-            // ONLINE SAFETY
+            // SCAM KEYWORDS
             // =========================
-            else if (input.Contains("safe"))
+            else if (input.Contains("scam") ||
+                     input.Contains("fraud") ||
+                     input.Contains("fake website") ||
+                     input.Contains("money scam") ||
+                     input.Contains("online scam"))
             {
-                lastTopic = "safety";
+                favouriteTopic = "online scams";
+                lastTopic = "scam";
 
-                BotReply("Keep your software updated and avoid using public Wi-Fi for sensitive activities.");
+                BotReply("Never share banking details or OTP codes with strangers online.");
+            }
+
+            // =========================
+            // HACKING KEYWORDS
+            // =========================
+            else if (input.Contains("hack") ||
+                     input.Contains("hacker") ||
+                     input.Contains("breach") ||
+                     input.Contains("cyber attack") ||
+                     input.Contains("exploit"))
+            {
+                favouriteTopic = "hacking awareness";
+                lastTopic = "hacking";
+
+                BotReply("Keep software updated to reduce hacking risks.");
+            }
+
+            // =========================
+            // WIFI KEYWORDS
+            // =========================
+            else if (input.Contains("wifi") ||
+                     input.Contains("public wifi") ||
+                     input.Contains("network") ||
+                     input.Contains("router") ||
+                     input.Contains("hotspot"))
+            {
+                favouriteTopic = "network security";
+                lastTopic = "wifi";
+
+                BotReply("Avoid entering sensitive information on public Wi-Fi networks.");
+            }
+
+            // =========================
+            // SOCIAL MEDIA KEYWORDS
+            // =========================
+            else if (input.Contains("facebook") ||
+                     input.Contains("instagram") ||
+                     input.Contains("tiktok") ||
+                     input.Contains("social media") ||
+                     input.Contains("twitter"))
+            {
+                favouriteTopic = "social media safety";
+                lastTopic = "social";
+
+                BotReply("Use private account settings and avoid accepting unknown friend requests.");
+            }
+
+            // =========================
+            // DEVICE SECURITY KEYWORDS
+            // =========================
+            else if (input.Contains("phone") ||
+                     input.Contains("laptop") ||
+                     input.Contains("device") ||
+                     input.Contains("computer") ||
+                     input.Contains("tablet"))
+            {
+                favouriteTopic = "device security";
+                lastTopic = "device";
+
+                BotReply("Enable screen locks and keep your devices updated.");
+            }
+
+            // =========================
+            // BANKING KEYWORDS
+            // =========================
+            else if (input.Contains("bank") ||
+                     input.Contains("banking") ||
+                     input.Contains("credit card") ||
+                     input.Contains("debit card") ||
+                     input.Contains("payment"))
+            {
+                favouriteTopic = "banking security";
+                lastTopic = "banking";
+
+                BotReply("Monitor bank activity regularly and never share PINs online.");
+            }
+
+            // =========================
+            // EMAIL KEYWORDS
+            // =========================
+            else if (input.Contains("email") ||
+                     input.Contains("inbox") ||
+                     input.Contains("attachment") ||
+                     input.Contains("gmail") ||
+                     input.Contains("outlook"))
+            {
+                favouriteTopic = "email security";
+                lastTopic = "email";
+
+                BotReply("Avoid opening attachments from unknown senders.");
             }
 
             // =========================
@@ -153,7 +266,7 @@ namespace CyberSecurityBotGUI
             {
                 if (favouriteTopic != "")
                 {
-                    BotReply(userName + ", you are interested in " + favouriteTopic + ".");
+                    BotReply(userName + ", your favourite topic is " + favouriteTopic + ".");
                 }
                 else
                 {
@@ -170,27 +283,27 @@ namespace CyberSecurityBotGUI
             {
                 if (lastTopic == "password")
                 {
-                    BotReply("You should also enable two-factor authentication for better password security.");
+                    BotReply("Enable two-factor authentication for extra password protection.");
                 }
                 else if (lastTopic == "phishing")
                 {
-                    BotReply("Phishing attacks may use fake websites that look real.");
+                    BotReply("Phishing sites can look almost identical to legitimate websites.");
+                }
+                else if (lastTopic == "malware")
+                {
+                    BotReply("Avoid downloading files from untrusted websites.");
                 }
                 else if (lastTopic == "privacy")
                 {
-                    BotReply("Avoid sharing personal information publicly online.");
+                    BotReply("Use strong privacy settings on all online accounts.");
                 }
-                else if (lastTopic == "scam")
+                else if (lastTopic == "wifi")
                 {
-                    BotReply("Online scams often promise quick money or prizes.");
-                }
-                else if (lastTopic == "safety")
-                {
-                    BotReply("Installing antivirus software can improve your online safety.");
+                    BotReply("VPN services can improve safety on public Wi-Fi.");
                 }
                 else
                 {
-                    BotReply("Can you tell me which cybersecurity topic you want to know more about?");
+                    BotReply("Please tell me which topic you want to learn more about.");
                 }
             }
 
@@ -198,22 +311,26 @@ namespace CyberSecurityBotGUI
             // SENTIMENT DETECTION
             // =========================
             else if (input.Contains("worried") ||
-                     input.Contains("scared"))
+                     input.Contains("scared") ||
+                     input.Contains("nervous"))
             {
-                BotReply("It's completely understandable to feel that way. Scammers can be very convincing. Let me share some tips to help you stay safe.");
+                BotReply("It's understandable to feel concerned. Cybersecurity awareness helps you stay protected online.");
             }
 
-            else if (input.Contains("frustrated"))
+            else if (input.Contains("frustrated") ||
+                     input.Contains("angry"))
             {
-                BotReply("Cybersecurity can sometimes feel overwhelming, but learning small safety habits helps a lot.");
+                BotReply("Cybersecurity can feel overwhelming, but learning simple habits makes a big difference.");
             }
 
-            else if (input.Contains("curious"))
+            else if (input.Contains("curious") ||
+                     input.Contains("interested"))
             {
-                BotReply("Curiosity is great! Learning about cybersecurity helps protect your personal information.");
+                BotReply("That's great! Learning cybersecurity is an excellent way to stay safe online.");
             }
 
-            else if (input.Contains("happy"))
+            else if (input.Contains("happy") ||
+                     input.Contains("good"))
             {
                 BotReply("Glad to hear that! Keep practicing safe online habits.");
             }
@@ -223,13 +340,15 @@ namespace CyberSecurityBotGUI
             // =========================
             else if (input.Contains("help"))
             {
-                BotReply("I can help with passwords, phishing, scams, privacy, and online safety.");
+                BotReply("I can help with passwords, phishing, malware, scams, privacy, banking, Wi-Fi, and device security.");
             }
 
             // =========================
             // EXIT
             // =========================
-            else if (input.Contains("exit"))
+            else if (input.Contains("exit") ||
+                     input.Contains("quit") ||
+                     input.Contains("bye"))
             {
                 BotReply("Goodbye " + userName + "! Stay safe online.");
 
@@ -243,15 +362,14 @@ namespace CyberSecurityBotGUI
             {
                 string[] unknownResponses =
                 {
-                    "I'm not sure I understand. Could you rephrase that?",
-                    "Can you give me more details?",
-                    "Try asking about passwords, phishing, scams, or privacy."
+                    "I do not understand. Could you rephrase that?",
+                    "Please ask about a cybersecurity topic.",
+                    "Try asking about passwords, scams, privacy, malware, or phishing."
                 };
 
                 BotReply(unknownResponses[random.Next(unknownResponses.Length)]);
             }
 
-            // Clear TextBox
             txtUserInput.Clear();
         }
     }
